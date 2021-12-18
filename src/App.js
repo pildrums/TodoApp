@@ -8,17 +8,20 @@ const App = () => {
     {
       id: 1,
       text: '리액트 기초 알아보기',
-      checked: true
+      checked: true,
+      star: false,
     },
     {
       id: 2,
       text: '컴포넌트 스타일링해 보기',
-      checked: true
+      checked: true,
+      star: false,
     },
     {
       id: 3,
       text: '일정 관리 앱 만들어 보기',
-      checked: false
+      checked: false,
+      star: false,
     },
   ]);
 
@@ -32,7 +35,7 @@ const App = () => {
         checked: false,
       };
       setTodos(todos.concat(todo));
-      nextId.current += 1;
+      nextId.current++;
     },
     [todos],
   );
@@ -55,10 +58,25 @@ const App = () => {
     [todos],
   );
 
+  const onImportant = useCallback(
+    id => {
+      setTodos(
+        todos.map(todo => 
+          todo.id === id ? {...todo, star: !todo.star} : todo)
+      );
+    },
+    [todos]
+  );
+
   return (
     <TodoTemplate>
       <TodoInsert onInsert={onInsert} />
-      <TodoList todos={todos} onRemove={onRemove} onToggle={onToggle}/>
+      <TodoList
+        todos={todos} 
+        onRemove={onRemove} 
+        onToggle={onToggle}
+        onImportant={onImportant}
+      />
     </TodoTemplate>
   );
 };
